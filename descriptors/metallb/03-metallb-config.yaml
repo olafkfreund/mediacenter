@@ -1,0 +1,18 @@
+# Source: metallb/templates/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metallb
+  labels:
+    heritage: "Helm"
+    release: "metallb"
+    chart: metallb-0.12.0
+    app: metallb
+data:
+  config: |
+    address-pools:
+    - addresses:
+      - 192.168.68.200-192.168.68.210
+      name: default
+      protocol: layer2
+---

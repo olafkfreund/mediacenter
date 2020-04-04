@@ -1,0 +1,89 @@
+NAME: sonarr
+LAST DEPLOYED: Sat Apr  4 21:19:11 2020
+NAMESPACE: media
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace media -l "app=sonarr,release=sonarr" -o jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl port-forward $POD_NAME 8080:80
+---
+# Source: sonarr/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+  labels:
+    app: sonarr
+    chart: sonarr-0.1.0
+    release: sonarr
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8989
+      protocol: TCP
+      name: http
+  selector:
+    app: sonarr
+    release: sonarr
+---
+# Source: sonarr/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  labels:
+    app: sonarr
+    chart: sonarr-0.1.0
+    release: sonarr
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+      release: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+        release: sonarr
+    spec:
+      volumes:
+      - name: media-volume
+        persistentVolumeClaim:
+          claimName: media-volume
+      containers:
+        - name: sonarr
+          image: "linuxserver/sonarr:arm32v7-latest"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 8989
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: media-volume
+              subPath: configs/sonarr
+            - mountPath: /downloads/transmission
+              name: media-volume
+              subPath: downloads/transmission
+            - mountPath: /tv
+              name: media-volume
+              subPath: library/tv
+          resources:
+            limits:
+              cpu: 0.5
+              memory: 256Mi
+            requests:
+              cpu: 0.1
+              memory: 128Mi

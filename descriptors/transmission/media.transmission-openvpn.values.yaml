@@ -42,7 +42,7 @@ service:
 volumes:
   - name: "media-volume"
     persistentVolumeClaim:
-      claimName: "media-volume" # PersistentVolumeClaim created earlier
+      claimName: "media-volume"
   - name: "dev-tun" # Needed for VPN
     hostPath:
       path: "/dev/net/tun"

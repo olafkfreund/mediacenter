@@ -8,8 +8,8 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 900Gi
+    storage: 3Ti
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
-    path: "/mnt/media"
+    path: "/mnt/disk01"

@@ -1,0 +1,98 @@
+---
+# Source: jackett/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jackett
+  labels:
+    app: jackett
+    chart: jackett-0.1.0
+    release: jackett
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 9117
+      protocol: TCP
+      name: http
+  selector:
+    app: jackett
+    release: jackett
+---
+# Source: jackett/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+  labels:
+    app: jackett
+    chart: jackett-0.1.0
+    release: jackett
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jackett
+      release: jackett
+  template:
+    metadata:
+      labels:
+        app: jackett
+        release: jackett
+    spec:
+      volumes:
+      - name: media-volume
+        persistentVolumeClaim:
+          claimName: media-volume
+      - hostPath:
+          path: /dev/net/tun
+        name: dev-tun
+      containers:
+        - name: jackett
+          image: "gjeanmart/jackettvpn:arm-latest"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: VPN_ENABLED
+              value: "yes"
+            - name: VPN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: openvpn
+            - name: VPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: openvpn
+            - name: LAN_NETWORK
+              value: 192.168.68.0/24
+            - name: CREATE_TUN_DEVICE
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 9117
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: media-volume
+              subPath: configs/jackett
+            - mountPath: /downloads
+              name: media-volume
+              subPath: downloads/jackett
+          resources:
+            limits:
+              cpu: 0.5
+              memory: 256Mi
+            requests:
+              cpu: 0.1
+              memory: 128Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_ADMIN

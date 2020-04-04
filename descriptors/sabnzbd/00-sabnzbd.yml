@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sabnzbd-deployment
+spec:
+  selector:
+    matchLabels:
+      app: sabnzbd
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+    spec:
+      containers:
+      - name: sabnzbd
+        image: linuxserver/sabnzbd
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 6789
+        volumeMounts:
+        - name: "media-volume"
+          mountPath: "/config"
+          subPath: "configs/sabnzbd"
+        - name: "media-volume"
+          mountPath: "/downloads/sabnzbd/"
+          subPath: "downloads/sabnzbd/completed-downloads "
+        - name: "media-volume"
+          mountPath: "/donwloads/sabnzbd"
+          subPath: "downloads/sabnzbd/incomplete-downloads"
+      volumes:
+          - name: "media-volume"
+            persistentVolumeClaim:
+              claimName:  "media-volume"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sabnzbd-service
+spec:
+  selector:
+    app: sabnzbd
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP

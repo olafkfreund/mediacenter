@@ -1,0 +1,221 @@
+---
+# Source: transmission-openvpn/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-transmission-openvpn
+  labels:
+    app: transmission-openvpn
+    chart: transmission-openvpn-0.1.0
+    release: transmission
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 9091
+      protocol: TCP
+      name: http
+  selector:
+    app: transmission-openvpn
+    release: transmission
+---
+# Source: transmission-openvpn/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission-transmission-openvpn
+  labels:
+    app: transmission-openvpn
+    chart: transmission-openvpn-0.1.0
+    release: transmission
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission-openvpn
+      release: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission-openvpn
+        release: transmission
+    spec:
+      volumes:
+      - name: disk01
+        persistentVolumeClaim:
+            claimName: "media-volume"
+
+      - hostPath:
+          path: /dev/net/tun
+        name: dev-tun
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+        - 1.1.1.1
+        - 1.0.0.1
+      securityContext:
+        {}
+      containers:
+        - name: transmission-openvpn
+          image: "haugene/transmission-openvpn:latest-armhf"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: OPENVPN_PROVIDER
+              value: NORDVPN
+            - name: OPENVPN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: openvpn
+            - name: OPENVPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: openvpn
+            - name: NORDVPN_PROTOCOL
+              value: TCP
+            - name: NORDVPN_COUNTRY
+              value: CH
+            - name: NORDVPN_CATEGORY
+              value: P2P
+            - name: LOCAL_NETWORK
+              value: 192.168.0.0/24
+            - name: TRANSMISSION_PEER_PORT
+              value: "47444"
+            - name: TRANSMISSION_DOWNLOAD_DIR
+              value: /downloads/transmission
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 9091
+              protocol: TCP
+          securityContext:
+            capabilities:
+              add:
+              - NET_ADMIN
+          volumeMounts:
+            - mountPath: /data
+              name: disk01
+              subPath: configs/transmission-data
+            - mountPath: /downloads/transmission
+              name: disk01
+              subPath: downloads/transmission
+            - mountPath: /dev/net/tun
+              name: dev-tun
+          resources:
+            {}
+---
+# Source: transmission-openvpn/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-transmission-openvpn
+  labels:
+    app: transmission-openvpn
+    chart: transmission-openvpn-0.1.0
+    release: transmission
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 9091
+      protocol: TCP
+      name: http
+  selector:
+    app: transmission-openvpn
+    release: transmission
+---
+# Source: transmission-openvpn/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission-transmission-openvpn
+  labels:
+    app: transmission-openvpn
+    chart: transmission-openvpn-0.1.0
+    release: transmission
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission-openvpn
+      release: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission-openvpn
+        release: transmission
+    spec:
+      volumes:
+      - name: media-volume
+        persistentVolumeClaim:
+          claimName: media-volume
+      - hostPath:
+          path: /dev/net/tun
+        name: dev-tun
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+        - 1.1.1.1
+        - 1.0.0.1
+      securityContext:
+        {}
+      containers:
+        - name: transmission-openvpn
+          image: "haugene/transmission-openvpn:latest-armhf"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: OPENVPN_PROVIDER
+              value: NORDVPN
+            - name: OPENVPN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: openvpn
+            - name: OPENVPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: openvpn
+            - name: NORDVPN_PROTOCOL
+              value: TCP
+            - name: NORDVPN_COUNTRY
+              value: CH
+            - name: NORDVPN_CATEGORY
+              value: P2P
+            - name: LOCAL_NETWORK
+              value: 192.168.0.0/24
+            - name: TRANSMISSION_PEER_PORT
+              value: "47444"
+            - name: TRANSMISSION_DOWNLOAD_DIR
+              value: /downloads/transmission
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 9091
+              protocol: TCP
+          securityContext:
+            capabilities:
+              add:
+              - NET_ADMIN
+          volumeMounts:
+            - mountPath: /data
+              name: media-volume
+              subPath: configs/transmission-data
+            - mountPath: /downloads/transmission
+              name: media-volume
+              subPath: downloads/transmission
+            - mountPath: /dev/net/tun
+              name: dev-tun
+          resources:
+            {}

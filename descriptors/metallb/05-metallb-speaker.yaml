@@ -1,0 +1,66 @@
+---
+# Source: metallb/templates/speaker.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: metallb-speaker
+  labels:
+    heritage: "Helm"
+    release: "metallb"
+    chart: metallb-0.12.0
+    app: metallb
+    component: speaker
+spec:
+  selector:
+    matchLabels:
+      app: metallb
+      component: speaker
+      release: "metallb"
+  template:
+    metadata:
+      labels:
+        heritage: "Helm"
+        release: "metallb"
+        chart: metallb-0.12.0
+        app: metallb
+        component: speaker
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      serviceAccountName: metallb-speaker
+      terminationGracePeriodSeconds: 0
+      hostNetwork: true
+      containers:
+      - name: speaker
+        image: metallb/speaker:v0.8.1
+        imagePullPolicy: IfNotPresent
+        args:
+        - --port=7472
+        - --config=metallb
+        env:
+        - name: METALLB_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: METALLB_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        ports:
+        - name: monitoring
+          containerPort: 7472
+        resources:
+          {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            - SYS_ADMIN
+      nodeSelector:
+        "beta.kubernetes.io/os": linux

@@ -1,0 +1,134 @@
+---
+# Source: kube-plex/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: plex-kube-plex
+---
+# Source: kube-plex/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-kube-plex
+  labels:
+    app: kube-plex
+    chart: kube-plex-0.2.7
+    release: plex
+    heritage: Helm
+spec:
+  type: LoadBalancer
+  ports:
+    - name: pms
+      port: 32400
+      protocol: TCP
+      targetPort: pms
+
+    - name: http
+      port: 80
+      targetPort: pms
+    - name: https
+      port: 443
+      targetPort: 32443
+  selector:
+    app: kube-plex
+    release: plex
+---
+# Source: kube-plex/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex-kube-plex
+  labels:
+    app: kube-plex
+    chart: kube-plex-0.2.7
+    release: plex
+    heritage: Helm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kube-plex
+      release: plex
+  template:
+    metadata:
+      labels:
+        app: kube-plex
+        release: plex
+    spec:
+      serviceAccountName: plex-kube-plex
+      hostname: "plex-kube-plex"
+      containers:
+      - name: plex
+        image: "linuxserver/plex:arm32v7-latest"
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+        ports:
+          - name: pms
+            containerPort: 32400
+          - name: http
+            containerPort: 32400
+          - name: https
+            containerPort: 32443
+        env:
+        - name: TZ
+          value: "Europe/London"
+        # TODO: move this to a secret?
+        - name: PLEX_CLAIM
+          value: "claim-sopYKDPzZPu4-L4qGQUg"
+        # kube-plex env vars
+        - name: PMS_INTERNAL_ADDRESS
+          value: http://plex-kube-plex:32400
+        - name: PMS_IMAGE
+          value: "linuxserver/plex:arm32v7-latest"
+        - name: KUBE_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: TRANSCODE_PVC
+          value: media-volume
+        - name: DATA_PVC
+          value: media-volume
+        - name: CONFIG_PVC
+          value: media-volume
+        volumeMounts:
+        - name: data
+          mountPath: /data
+          subPath: library/
+        - name: config
+          mountPath: /config
+          subPath: configs/plex
+        - name: transcode
+          mountPath: /transcode
+          subPath: transcode
+        - name: shared
+          mountPath: /shared
+          subPath: shared
+        resources:
+          {}
+      nodeSelector:
+        beta.kubernetes.io/arch: arm
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: media-volume
+      - name: config
+        persistentVolumeClaim:
+          claimName: media-volume
+      - name: transcode
+        emptyDir: {}
+      - name: shared
+        emptyDir: {}

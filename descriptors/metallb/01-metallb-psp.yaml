@@ -1,0 +1,32 @@
+---
+# Source: metallb/templates/psp.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: metallb-speaker
+  labels:
+    heritage: "Helm"
+    release: "metallb"
+    chart: metallb-0.12.0
+    app: metallb
+spec:
+  hostNetwork: true
+  hostPorts:
+  - min: 7472
+    max: 7472
+  privileged: true
+  allowPrivilegeEscalation: false
+  allowedCapabilities:
+  - 'NET_ADMIN'
+  - 'NET_RAW'
+  - 'SYS_ADMIN'
+  volumes:
+  - '*'
+  fsGroup:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny

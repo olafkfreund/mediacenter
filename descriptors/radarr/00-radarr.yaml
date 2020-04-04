@@ -1,0 +1,78 @@
+---
+# Source: radarr/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+  labels:
+    app: radarr
+    chart: radarr-0.1.0
+    release: radarr
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 7878
+      protocol: TCP
+      name: http
+  selector:
+    app: radarr
+    release: radarr
+---
+# Source: radarr/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    app: radarr
+    chart: radarr-0.1.0
+    release: radarr
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+      release: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+        release: radarr
+    spec:
+      volumes:
+      - name: media-volume
+        persistentVolumeClaim:
+          claimName: media-volume
+      containers:
+        - name: radarr
+          image: "linuxserver/radarr:arm32v7-latest"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 7878
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: media-volume
+              subPath: configs/radarr
+            - mountPath: /downloads/transmission
+              name: media-volume
+              subPath: downloads/transmission
+            - mountPath: /movies
+              name: media-volume
+              subPath: library/movies
+          resources:
+            limits:
+              cpu: 0.5
+              memory: 256Mi
+            requests:
+              cpu: 0.1
+              memory: 128Mi
