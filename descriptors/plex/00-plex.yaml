@@ -99,24 +99,22 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: TRANSCODE_PVC
-          value: media-volume
+          value: "media-volume"
         - name: DATA_PVC
-          value: media-volume
+          value: "media-volume"
         - name: CONFIG_PVC
-          value: media-volume
+          value: "media-volume"
         volumeMounts:
         - name: data
-          mountPath: /data
-          subPath: library/
+          mountPath: /library
         - name: config
-          mountPath: /config
+          mountPath: /configs
           subPath: configs/plex
         - name: transcode
           mountPath: /transcode
           subPath: transcode
         - name: shared
           mountPath: /shared
-          subPath: shared
         resources:
           {}
       nodeSelector:
@@ -124,11 +122,13 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: media-volume
+          claimName: "media-volume"
       - name: config
         persistentVolumeClaim:
-          claimName: media-volume
+          claimName: "media-volume"
       - name: transcode
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: "media-volume"
       - name: shared
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: "media-volume"

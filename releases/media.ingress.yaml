@@ -26,10 +26,10 @@ spec:
             servicePort: 80
           path: "/radarr"
         - backend:
-            serviceName: "sabnzbd-service"
-            servicePort: 80
-          path: "/sabnzbd"
+            serviceName: "nzbget"
+            servicePort: 6789
+          path: "/nzbget"
         - backend:
-            serviceName: "plex-kube-plex"
-            servicePort: 32400
-          path: "/"
+            serviceName: "music-lidarr"
+            servicePort: 8686
+          path: "/lidarr"

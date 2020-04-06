@@ -26,10 +26,13 @@ spec:
           subPath: "configs/sabnzbd"
         - name: "media-volume"
           mountPath: "/downloads/sabnzbd/"
-          subPath: "downloads/sabnzbd/completed-downloads "
+          subPath: "downloads/sabnzbd/completed-downloads"
         - name: "media-volume"
-          mountPath: "/donwloads/sabnzbd"
+          mountPath: "/downloads/sabnzbd"
           subPath: "downloads/sabnzbd/incomplete-downloads"
+        - name: "media-volume"
+          mountPath: "/library"
+          subPath: "library"
       volumes:
           - name: "media-volume"
             persistentVolumeClaim:

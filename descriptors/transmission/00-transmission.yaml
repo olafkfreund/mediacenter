@@ -43,7 +43,7 @@ spec:
         release: transmission
     spec:
       volumes:
-      - name: disk01
+      - name: media-volume
         persistentVolumeClaim:
             claimName: "media-volume"
 
@@ -100,11 +100,14 @@ spec:
               - NET_ADMIN
           volumeMounts:
             - mountPath: /data
-              name: disk01
+              name: media-volume
               subPath: configs/transmission-data
-            - mountPath: /downloads/transmission
-              name: disk01
+            - mountPath: /configs/transmission-data
+              name: media-volume
               subPath: downloads/transmission
+            - mountPath: /audiobooks
+              name: media-volume
+              subPath: library/audiobooks
             - mountPath: /dev/net/tun
               name: dev-tun
           resources:
@@ -215,6 +218,9 @@ spec:
             - mountPath: /downloads/transmission
               name: media-volume
               subPath: downloads/transmission
+            - mountPath: /audiobooks
+              name: media-volume
+              subPath: library/audiobooks
             - mountPath: /dev/net/tun
               name: dev-tun
           resources:

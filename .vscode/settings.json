@@ -1,9 +1,4 @@
 {
-    "cloudcode.kubeconfigs": [
-        {
-            "name": "microk8s",
-            "configPath": "/home/vscode/.kube/config"
-        }
-    ],
-    "cloudcode.active-kubeconfig": "microk8s"
+    "cloudcode.kubeconfigs": [],
+    "cloudcode.active-kubeconfig": "Default KubeConfig"
 }

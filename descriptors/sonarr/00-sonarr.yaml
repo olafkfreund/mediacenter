@@ -1,15 +1,3 @@
-NAME: sonarr
-LAST DEPLOYED: Sat Apr  4 21:19:11 2020
-NAMESPACE: media
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NOTES:
-1. Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace media -l "app=sonarr,release=sonarr" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl port-forward $POD_NAME 8080:80
----
 # Source: sonarr/templates/service.yaml
 apiVersion: v1
 kind: Service
