@@ -1,0 +1,17 @@
+---
+version: '3.3'
+services:
+  komga:
+    image: gotson/komga
+    container_name: komga
+    volumes:
+      - type: bind
+        source: /path/to/data
+        target: /config
+      - type: bind
+        source: /path/to/books
+        target: /books
+    ports:
+      - 8080:8080
+    user: "1000:1000"
+    restart: unless-stopped
