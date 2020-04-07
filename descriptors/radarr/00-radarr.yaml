@@ -52,9 +52,9 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
-              value: "1000"
+              value: "1001"
             - name: PGID
-              value: "1000"
+              value: "1001"
           ports:
             - name: http
               containerPort: 7878
@@ -63,9 +63,9 @@ spec:
             - mountPath: /config
               name: media-volume
               subPath: configs/radarr
-            - mountPath: /downloads/transmission
+            - mountPath: /incoming/movies
               name: media-volume
-              subPath: downloads/transmission
+              subPath: downloads/movies
             - mountPath: /movies
               name: media-volume
               subPath: library/movies

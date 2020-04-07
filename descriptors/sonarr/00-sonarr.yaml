@@ -51,9 +51,9 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
-              value: "1000"
+              value: "1001"
             - name: PGID
-              value: "1000"
+              value: "1001"
           ports:
             - name: http
               containerPort: 8989
@@ -65,6 +65,9 @@ spec:
             - mountPath: /downloads/transmission
               name: media-volume
               subPath: downloads/transmission
+            - mountPath: /incoming/tv
+              name: media-volume
+              subPath: downloads/tv
             - mountPath: /tv
               name: media-volume
               subPath: library/tv

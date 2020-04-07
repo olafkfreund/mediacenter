@@ -79,6 +79,12 @@ spec:
             - mountPath: /downloads
               name: media-volume
               subPath: library
+            - mountPath: /incoming/tv
+              name: media-volume
+              subPath: downloads/tv
+            - mountPath: /incoming/movies
+              name: media-volume
+              subPath: downloads/movies
           resources:
             {}
       volumes:
