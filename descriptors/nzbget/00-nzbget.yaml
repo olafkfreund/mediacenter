@@ -85,6 +85,9 @@ spec:
             - mountPath: /incoming/movies
               name: media-volume
               subPath: downloads/movies
+            - mountPath: /incoming/manga
+              name: media-volume
+              subPath: downloads/manga
           resources:
             {}
       volumes:

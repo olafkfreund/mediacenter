@@ -37,3 +37,7 @@ spec:
             serviceName: "bazarr"
             servicePort: 6767
           path: "/bazarr"
+        - backend:
+            serviceName: "readarr"
+            servicePort: 80
+          path: "/readarr"

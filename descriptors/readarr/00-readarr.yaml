@@ -1,0 +1,80 @@
+# Source: readarr/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: readarr
+  labels:
+    app: readarr
+    chart: readarr-0.1.0
+    release: readarr
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8787
+      protocol: TCP
+      name: http
+  selector:
+    app: readarr
+    release: readarr
+---
+# Source: readarr/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readarr
+  labels:
+    app: readarr
+    chart: readarr-0.1.0
+    release: readarr
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: readarr
+      release: readarr
+  template:
+    metadata:
+      labels:
+        app: readarr
+        release: readarr
+    spec:
+      volumes:
+      - name: media-volume
+        persistentVolumeClaim:
+          claimName: media-volume
+      containers:
+        - name: readarr
+          image: "hotio/readarr:unstable-0.1.0.17"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "1001"
+          ports:
+            - name: http
+              containerPort: 8787
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: media-volume
+              subPath: configs/readarr
+            - mountPath: /downloads/transmission
+              name: media-volume
+              subPath: downloads/manga
+            - mountPath: /incoming/manga
+              name: media-volume
+              subPath: downloads/manga
+            - mountPath: /manga
+              name: media-volume
+              subPath: library/manga
+          resources:
+            limits:
+              cpu: 0.5
+              memory: 256Mi
+            requests:
+              cpu: 0.1
+              memory: 128Mi
