@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: 0.1-mylar
+  name: mylar
   labels:
-    helm.sh/chart: mylar-1.0.0
+    helm.sh/chart: mylar
     app.kubernetes.io/name: mylar
-    app.kubernetes.io/instance: 0.1
+    app.kubernetes.io/instance: k3s
     app.kubernetes.io/version: "arm"
     app.kubernetes.io/managed-by: Helm
 ---
@@ -15,11 +15,11 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: 0.1-mylar-env-config
+  name: mylar-env-config
   labels:
-    helm.sh/chart: mylar-1.0.0
+    helm.sh/chart: mylar
     app.kubernetes.io/name: mylar
-    app.kubernetes.io/instance: 0.1
+    app.kubernetes.io/instance: k3s
     app.kubernetes.io/version: "arm"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -33,11 +33,11 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 0.1-mylar
+  name: mylar
   labels:
-    helm.sh/chart: mylar-1.0.0
+    helm.sh/chart: mylar
     app.kubernetes.io/name: mylar
-    app.kubernetes.io/instance: 0.1
+    app.kubernetes.io/instance: k3s
     app.kubernetes.io/version: "arm"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -49,17 +49,17 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: mylar
-    app.kubernetes.io/instance: 0.1
+    app.kubernetes.io/instance: k3s
 ---
 # Source: mylar/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 0.1-mylar
+  name: mylar
   labels:
-    helm.sh/chart: mylar-1.0.0
+    helm.sh/chart: mylar
     app.kubernetes.io/name: mylar
-    app.kubernetes.io/instance: 0.1
+    app.kubernetes.io/instance: k3s
     app.kubernetes.io/version: "arm"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -69,25 +69,25 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: mylar
-      app.kubernetes.io/instance: 0.1
+      app.kubernetes.io/instance: k3s
   template:
     metadata:
       labels:
         app.kubernetes.io/name: mylar
-        app.kubernetes.io/instance: 0.1
+        app.kubernetes.io/instance: k3s
     spec:
-      serviceAccountName: 0.1-mylar
+      serviceAccountName: mylar
       securityContext:
         {}
       containers:
         - name: mylar
           securityContext:
             {}
-          image: "linuxserver/mylar:arm"
-          imagePullPolicy: Always
+          image: "linuxserver/mylar:arm32v7-latest"
+          imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: 0.1-mylar-env-config
+                name: mylar-env-config
           ports:
             - name: http
               containerPort: 8090
@@ -123,7 +123,7 @@ spec:
               subPath: library/manga
             - mountPath: /incoming
               name: media-volume
-              subPath: donwloads/manga
+              subPath: downloads/manga
             - mountPath: /comics
               name: media-volume
           resources:
@@ -132,24 +132,3 @@ spec:
       - name: media-volume
         persistentVolumeClaim:
           claimName: media-volume
----
-# Source: mylar/templates/tests/test-connection.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "0.1-mylar-test-connection"
-  labels:
-    helm.sh/chart: mylar-1.0.0
-    app.kubernetes.io/name: mylar
-    app.kubernetes.io/instance: 0.1
-    app.kubernetes.io/version: "arm"
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    "helm.sh/hook": test-success
-spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args:  ['0.1-mylar:8090']
-  restartPolicy: Never

@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.106.0/containers/docker-existing-dockerfile
 {
-	"name": "Existing Dockerfile",
+	"name": "Raspberry-Pi K3s Manager",
 
 	// Sets the run context to one level up instead of the .devcontainer folder.
 	"context": "..",
@@ -30,5 +30,5 @@
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	//"remoteUser": "vscode"
+	"remoteUser": "vscode"
 }

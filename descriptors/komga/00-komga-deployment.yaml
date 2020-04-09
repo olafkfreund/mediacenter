@@ -28,14 +28,21 @@ spec:
       - image: gotson/komga
         imagePullPolicy: "IfNotPresent"
         name: komga
+        env:
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "1001"
         ports:
         - containerPort: 8080
         resources: {}
         volumeMounts:
         - mountPath: /config
           name: media-volume
+          subPath: configs/komga
         - mountPath: /books
-          name: komga-claim1
+          name: media-volume
+          subPath: library/manga
       restartPolicy: Always
       serviceAccountName: ""
       volumes:

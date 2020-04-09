@@ -108,6 +108,9 @@ spec:
             - mountPath: /audiobooks
               name: media-volume
               subPath: library/audiobooks
+            - mountPath: /incoming
+              name: media-volume
+              subPath: downloads
             - mountPath: /dev/net/tun
               name: dev-tun
           resources:
