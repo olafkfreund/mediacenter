@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: "media"
+  name: "komga-ingress"
+spec:
+  rules:
+  - host: "komga.192.168.68.200.nip.io"
+    http:
+      paths:
+        - backend:
+            serviceName: "komga"
+            servicePort: 8080
+          path: "/"
