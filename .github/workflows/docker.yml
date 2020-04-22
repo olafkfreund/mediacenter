@@ -31,7 +31,7 @@ jobs:
             IMAGE_NAME=${folder##*/}
 
             tmpName="image-$RANDOM"
-            docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 $folder --file $folder/Dockerfile --tag $tmpName
+            docker buildx build --platform linux/arm/v7 $folder --file $folder/Dockerfile --tag $tmpName
             IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/olaffreund/$IMAGE_NAME
             VERSION=$(cat $versionFilePath)
 
