@@ -23,14 +23,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apk add --no-cache bash busybox-suid su-exec
 
 # OpenVPN Variables
-ENV OPENVPN_FILE=Frankfurt.ovpn \
+ENV OPENVPN_FILE=uk.ovpn \
  LOCAL_NET=192.168.1.0/24
 
 # Volumes
 VOLUME /config
 
 # Add Files
-COPY Frankfurt.ovpn /
+COPY uk.ovpn /
 COPY logindata.conf /
 COPY startups /startups
 
