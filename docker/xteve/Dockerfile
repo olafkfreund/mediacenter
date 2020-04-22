@@ -3,15 +3,14 @@ RUN apk update
 RUN apk upgrade
 RUN apk add --no-cache ca-certificates openvpn runit tzdata bash busybox-suid su-exec
 
-MAINTAINER alturismo alturismo@gmail.com
 
 # Timezone (TZ)
-ENV TZ=Europe/Berlin
+ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # OpenVPN Variables
-ENV OPENVPN_FILE=Frankfurt.ovpn \
-LOCAL_NET=192.168.1.0/24
+ENV OPENVPN_FILE=uk.ovpn \
+LOCAL_NET=192.168.68.0/24
 
 # Volumes
 VOLUME /config
@@ -22,7 +21,7 @@ RUN apk add vlc
 RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 
 # Add Files
-COPY Frankfurt.ovpn /
+COPY uk.ovpn /
 COPY logindata.conf /
 COPY startups /startups
 
