@@ -27,7 +27,7 @@ jobs:
 
             tmpName="image-$RANDOM"
             docker build $folder --file $folder/Dockerfile --tag $tmpName
-            IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.REPOSITORY }}/$IMAGE_NAME
+            IMAGE_ID="registry.hub.docker.com/olaffreund/mediacenter_k8s/$IMAGE_NAME"
             VERSION=$(cat $versionFilePath)
 
             echo IMAGE_ID=$IMAGE_ID
