@@ -1,0 +1,58 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: "media"
+  name: "media-ingress"
+spec:
+  rules:
+  - host: "media.192.168.68.200.nip.io"
+    http:
+      paths:
+        - backend:
+            serviceName: "transmission-transmission-openvpn"
+            servicePort: 80
+          path: "/transmission"
+        - backend:
+            serviceName: "sonarr"
+            servicePort: 80
+          path: "/sonarr"
+        - backend:
+            serviceName: "jackett"
+            servicePort: 80
+          path: "/jackett"
+        - backend:
+            serviceName: "radarr"
+            servicePort: 80
+          path: "/radarr"
+        - backend:
+            serviceName: "nzbget"
+            servicePort: 6789
+          path: "/nzbget"
+        - backend:
+            serviceName: "music-lidarr"
+            servicePort: 8686
+          path: "/lidarr"
+        - backend:
+            serviceName: "bazarr"
+            servicePort: 6767
+          path: "/bazarr"
+        - backend:
+            serviceName: "mylar"
+            servicePort: 8090
+          path: "/"
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: "media"
+  name: "komga-ingress"
+spec:
+  rules:
+  - host: "komga.192.168.68.200.nip.io"
+    http:
+      paths:
+        - backend:
+            serviceName: "komga"
+            servicePort: 8080
+          path: "/"

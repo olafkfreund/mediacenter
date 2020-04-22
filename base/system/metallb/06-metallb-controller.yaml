@@ -43,8 +43,7 @@ spec:
         ports:
         - name: monitoring
           containerPort: 7472
-        resources:
-          {}
+        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
