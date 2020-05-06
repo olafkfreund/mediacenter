@@ -1,0 +1,7 @@
+bases:
+  - 01-metallb-psp.yaml
+  - 02-metallb-service-account.yaml
+  - 03-metallb-config.yaml
+  - 04-metallb-rbac.yaml
+  - 05-metallb-speaker.yaml
+  - 06-metallb-controller.yaml
