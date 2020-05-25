@@ -1,4 +1,6 @@
-bases:
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
   - 01-metallb-psp.yaml
   - 02-metallb-service-account.yaml
   - 03-metallb-config.yaml

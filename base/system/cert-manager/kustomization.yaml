@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - namespace.yaml
-  - media.ingress.yaml
+  - 00-crds.yaml
+  - 01-cert-manager.yaml
+  - letsencrypt-prod.yaml
