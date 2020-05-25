@@ -1,6 +1,9 @@
 # Media Center on Pi 4
 
-#Install and configure the cluster.
+I'm using VSCode and an devcontainer. Since I have a lot of different projects it's really easy to use container pre-build for each project.
+I have attached the .devcontainer with the source files. Try it. It works great.
+
+## Install and configure the cluster.
 
 There are so many ways to install and configure a kubernetes cluster on Pi 4.
 
