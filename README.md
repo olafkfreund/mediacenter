@@ -10,9 +10,10 @@ There are so many ways to install and configure a kubernetes cluster on Pi 4.
 - K3s with Ansbile See my repo: https://github.com/olafkfreund/ansible-k3s-rpi
 
 
-## Pre-Requirements
+## Pre-Requirements if not using "ansible-k3s-rpi playbook"
 
-- Installed k3s or microk8s
+- Installed k3s
+- configured SSD disk and mounted on "/mnt/disk01"
 - installed and configured nfs share and clients
 
 ## This repo is created for use with kustomize ( or fluxcd )
@@ -23,7 +24,7 @@ There are so many ways to install and configure a kubernetes cluster on Pi 4.
     - system: dashboard, cert-manager, metallb, nginx and Volumes
 
 
-## If you want to use this repo for Your self.
+## If you want to use this repo.
 
 ### Change config for Metallb
 
