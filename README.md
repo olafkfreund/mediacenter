@@ -25,7 +25,18 @@ There are so many ways to install and configure a kubernetes cluster on Pi 4.
 
 
 ## If you want to use this repo.
-
+Add system services like: nginx, metallb and Volumes.
+```bash
+kubectl apply -k ./system/
+```
+Add media services
+```bash
+kubectl apply -k ./base/media/
+```
+Add Ingress
+```bash
+kubectl apply -k ./base/common/
+```
 ### Change config for Metallb
 
 - 03-metallb-config.yaml: Change the address-pools config.
