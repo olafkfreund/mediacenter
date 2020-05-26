@@ -34,7 +34,52 @@ There are so many ways to install and configure a kubernetes cluster on Pi 4.
 - persistentvolume.yaml path file to what ever You are using.
 
 ### If You are running Plex remember to change:
-    - PLEX_CLAIM to your claim value. For more info check Plex documentation.
+ Get a claim token
+
+Obtain a Plex Claim Token by visiting plex.tv/claim. You need to create an account if you haven't already one yet.
+
+This will be used to bind your new PMS instance to your own user account automatically.
+
+### For Transmission over VPN create a secret. This is your NordVPN username and password:
+
+
+    kubectl create secret generic openvpn \
+    --from-literal username=<VPN_USERNAME> \
+    --from-literal password=<VPN_PASSWORD> \
+    --namespace media
+
+### Jacket over VPN
+Create a file credentials.conf into the folder /mnt/disk01/configs/jackett/openvpn/ composed of two line (first one: username and second one password)
+
+<VPN_USERNAME>
+<VPN_PASSWORD>
+Create the following directory structure on your SSD
+
+``$ mkdir -p /mnt/disk01/media/configs/jackett/Jackett/``
+Create the file ServerConfig.json into the folder /mnt/disk01/media/configs/jackett/Jackett/ with the following content:
+
+{
+  "BasePathOverride": "/jackett"
+}
+
+### Sonarr
+Create the following directory structure on your SSD
+
+``$ mkdir -p /mnt/disk01/media/configs/sonarr/``
+Create the file config.xml into the folder /mnt/disk01/media/configs/sonarr/ with the following content:
+
+<Config>
+  <UrlBase>/sonarr</UrlBase>
+</Config>
+### Radarr
+Create the following directory structure on your SSD
+
+``$ mkdir -p /mnt/disk01/media/configs/radarr/``
+Create the file config.xml into the folder /mnt/disk01/media/configs/radarr/ with the following content:
+
+<Config>
+  <UrlBase>/radarr</UrlBase>
+</Config>
 
 ### All the media services will be installed in the "media" namespace
 
