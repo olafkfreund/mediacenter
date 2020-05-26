@@ -50,9 +50,11 @@ This will be used to bind your new PMS instance to your own user account automat
 
 ### Jacket over VPN
 Create a file credentials.conf into the folder /mnt/disk01/configs/jackett/openvpn/ composed of two line (first one: username and second one password)
-
+```
 <VPN_USERNAME>
 <VPN_PASSWORD>
+```
+
 Create the following directory structure on your SSD
 
 ```$ mkdir -p /mnt/disk01/media/configs/jackett/Jackett/```
