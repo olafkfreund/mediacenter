@@ -55,7 +55,8 @@ Create a file credentials.conf into the folder /mnt/disk01/configs/jackett/openv
 <VPN_PASSWORD>
 Create the following directory structure on your SSD
 
-``$ mkdir -p /mnt/disk01/media/configs/jackett/Jackett/``
+```$ mkdir -p /mnt/disk01/media/configs/jackett/Jackett/```
+
 Create the file ServerConfig.json into the folder /mnt/disk01/media/configs/jackett/Jackett/ with the following content:
 
 ```
@@ -66,7 +67,8 @@ Create the file ServerConfig.json into the folder /mnt/disk01/media/configs/jack
 ### Sonarr
 Create the following directory structure on your SSD
 
-``$ mkdir -p /mnt/disk01/media/configs/sonarr/``
+```$ mkdir -p /mnt/disk01/media/configs/sonarr/```
+
 Create the file config.xml into the folder /mnt/disk01/media/configs/sonarr/ with the following content:
 
 ```
@@ -77,7 +79,8 @@ Create the file config.xml into the folder /mnt/disk01/media/configs/sonarr/ wit
 ### Radarr
 Create the following directory structure on your SSD
 
-``$ mkdir -p /mnt/disk01/media/configs/radarr/``
+```$ mkdir -p /mnt/disk01/media/configs/radarr/```
+
 Create the file config.xml into the folder /mnt/disk01/media/configs/radarr/ with the following content:
 
 ```
