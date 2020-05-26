@@ -7,7 +7,7 @@ I have attached the .devcontainer with the source files. Try it. It works great.
 
 There are so many ways to install and configure a kubernetes cluster on Pi 4.
 
-- K3s with Ansbile ( my favorite)
+- K3s with Ansbile ( my favorite) See my repo: ansbile-k3s-rpi
 - using k3setup
 
 ## Pre-Requirements
