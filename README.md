@@ -58,28 +58,33 @@ Create the following directory structure on your SSD
 ``$ mkdir -p /mnt/disk01/media/configs/jackett/Jackett/``
 Create the file ServerConfig.json into the folder /mnt/disk01/media/configs/jackett/Jackett/ with the following content:
 
+```
 {
   "BasePathOverride": "/jackett"
 }
-
+```
 ### Sonarr
 Create the following directory structure on your SSD
 
 ``$ mkdir -p /mnt/disk01/media/configs/sonarr/``
 Create the file config.xml into the folder /mnt/disk01/media/configs/sonarr/ with the following content:
 
+```
 <Config>
   <UrlBase>/sonarr</UrlBase>
 </Config>
+```
 ### Radarr
 Create the following directory structure on your SSD
 
 ``$ mkdir -p /mnt/disk01/media/configs/radarr/``
 Create the file config.xml into the folder /mnt/disk01/media/configs/radarr/ with the following content:
 
+```
 <Config>
   <UrlBase>/radarr</UrlBase>
 </Config>
+```
 
 ### All the media services will be installed in the "media" namespace
 
