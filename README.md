@@ -69,6 +69,7 @@ Create the file ServerConfig.json into the folder /mnt/disk01/media/configs/jack
 }
 ```
 ### Sonarr
+
 Create the following directory structure on your SSD
 
 ```bash
@@ -83,6 +84,7 @@ Create the file config.xml into the folder /mnt/disk01/media/configs/sonarr/ wit
 </Config>
 ```
 ### Radarr
+
 Create the following directory structure on your SSD
 
 ```bash
@@ -94,6 +96,21 @@ Create the file config.xml into the folder /mnt/disk01/media/configs/radarr/ wit
 ```
 <Config>
   <UrlBase>/radarr</UrlBase>
+</Config>
+```
+### Bazarr
+
+Create the following directory structure on your SSD
+
+```bash
+$ mkdir -p /mnt/disk01/media/configs/bazarr/
+```
+
+Create the file config.xml into the folder /mnt/disk01/media/configs/radarr/ with the following content:
+
+```
+<Config>
+  <UrlBase>/bazarr</UrlBase>
 </Config>
 ```
 
