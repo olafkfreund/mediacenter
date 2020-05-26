@@ -33,6 +33,9 @@ There are so many ways to install and configure a kubernetes cluster on Pi 4.
 
 - persistentvolume.yaml path file to what ever You are using.
 
+### If You are running Plex remember to change:
+    - PLEX_CLAIM to your claim value. For more info check Plex documentation.
+
 ### All the media services will be installed in the "media" namespace
 
 ### If you want to generate new yaml files or make other changes use the files in the "generators" folder.
